@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hej</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.min.js"></script>
+
+  </head>
+  <body class="container row" id="app">
+    <h1>Hello World!</h1>
+    <h2>{{clicked}}</h2>
+    <div class=" ">
+        <button onclick="buttonClick('{{button}}')" v-for = "button in buttons" style="" track-by="$index"
+                class="z-depth-3 col s4 btn waves-effect" v-text="button">
+
+        </button>
+
+    </div>
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+    <button onclick="buttonClick('generic-button')">Click</button>
+    <a class="btn green">Heej</a>
+    <div>
+        <div v-for="doc in docs" >
+            {{doc.name}}
+        </div>
+        {{docName}}
+    </div>
+  </body>
+
+  <script>
+    // You can also require other files to run in this process
+    var renderer = require('./renderer.js')
+    let {Doc} = renderer
+    let {event} = renderer
+
+    let app = new Vue({
+        el:'#app',
+        data:{
+            buttons:['gandalf','aragorn','pippin'],
+            clicked:'none',
+            docs:{},
+            docName:'lot laoded'
+        },
+        created(){
+            event.on('docs-loaded', docs=>{
+                this.docs=docs
+                console.log('docs$@'+this.docs)
+                this.docName = "loaded"
+            })
+        }
+
+    })
+        let {db} = renderer
+        // findAll(    docs=>    event.emit('docs-loaded',docs)    )
+        db.watch(    docs=>{
+             event.emit('docs-loaded',docs)
+             console.log(docs)
+        })
+
+    event.on('button-click', button=>   app.clicked=button  )
+    function buttonClick(button){
+        event.emit('button-click', button)
+    }
+  </script>
+</html>

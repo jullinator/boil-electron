@@ -1,0 +1,50 @@
+			<head>
+				<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+					      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+	      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+			</head>
+
+	      <body>
+	      	<div id="app" class="container row">
+	      		<input v-model="email" placeholder="email" />
+	      		<input v-model="password" type="password" placeholder="password" @keyup.enter="emit('login')" />
+	   			
+	   			<button v-for="action in ['registrera','logga in']" class="green darken-3 col s6 btn" v-text="action" />
+	      	
+	      	</div>
+	      	
+
+
+	      
+	      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+	
+	      <script type="text/javascript">
+	      	const Vue = require('vue')
+	      	
+	      	var vForm = require('../vue/v-form')
+	      	new Vue({
+	      		el:'#app',
+	      		data:{
+	      			email:'',
+	      			password:''
+	      		},
+	      		components:{
+	      			 vForm
+	      		},
+	      		created(){
+	      			$('input').css({'border':'1px black solid'  			})
+	      			$('input').addClass('z-depth-3 ')
+
+	      		},
+	      		methods:{
+	      			emit(event){
+
+	      			}
+	      		}
+	      	})
+
+
+	      </script>
+	      </body>
+
+

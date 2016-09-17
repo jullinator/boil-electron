@@ -1,0 +1,54 @@
+<h1>Main</h1>
+
+<div id="app"></div>
+<button id="btn2">2 btns</button>
+<button id="btn">My Btn</button>
+<button onclick="emit('state','inc')">INC</button>
+<button onclick="emit('state','dec')">DEC</button>
+<button onclick="emit('state','reset')">RESET</button>
+<button onclick="watcher.send('load-pdf','french')">french pdf</button>
+<a href="./pdf-viewer.html">iframe</a>
+<script>
+  const {ipcRenderer:watcher} = require('electron')
+
+	const Flashcard = require('../db3/Flashcard')
+
+	function addFlash (expression, meaning) {
+		let created = new Date()
+		Flashcard.insert({expression, meaning, created}, function(err, newDoc){
+			console.log(newDoc)
+		})
+	}
+
+  function emit (event="state", action="inc"){
+    watcher.send(event, action)
+  }
+  watcher.on('state-changed', (event, state) => {
+    console.log(state)
+  })
+
+
+class BigText {
+  constructor(id){
+    this.el=document.getElementById(id)
+  }
+  
+  html(val){
+        this.el.innerHTML=`<h1>${val}</h1>`
+  }
+  style(style){
+  	
+  	 this.el.style = style
+  }
+}
+let app = new BigText('app')
+let {Button} = require('./jser')
+
+
+let b = new Button('btn')
+let b2 = new Button('btn2')
+b.el.onclick=()=>
+	b.emit('click')
+
+
+</script>

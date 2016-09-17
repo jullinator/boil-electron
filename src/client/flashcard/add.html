@@ -1,0 +1,81 @@
+<head>
+	<style type="text/css">
+		#app{ display:flex; flex-direction: row;}
+		#top{	flex:1; margin:10;}
+		#content{	flex:3; margin:10;}
+		#content input {flex:1;}
+		#content button {flex:2;}
+	</style>
+	<link rel="stylesheet" type="text/css" href="../materialize/css/materialize.css">
+	<script src="../materialize/js/materialize.js"></script>
+</head>
+<body>
+	<DIV id="app">
+
+		<DIV id="top">
+			<button onclick="RouteTo['flash-inputs']()">flash-inputs</button>
+			<button onclick="RouteTo['flash-list']()">flash-list</button>
+			<button onclick="RouteTo['flash-item']()">flash-item</button>
+		</DIV>
+		<DIV id="content">
+			<input type="" name="expression">
+			<input type="" name="meaning">
+			<button>SUBMIT</button>
+		</DIV>
+
+	</DIV>
+	<script>
+		class Content{
+			constructor(){
+				this.el = document.getElementById('content')
+			}
+			setHtml(html){
+				this.el.innerHTML = html
+			}
+		}
+		const content = new Content()
+		class Route {
+			constructor(html){
+				this.html = html
+			}
+
+			USE(){
+				content.setHtml(this.html)
+			}
+		}
+		const flashInputs = new Route(`<input type="" name="expression">
+									<input type="" name="meaning">
+									<button>SUBMIT</button>`)
+
+		const flashList = new Route(`<button>View</button>
+									<button>Choose</button>
+									<ul>
+										<li>card</li>
+										<li>card2</li>
+										<li>card3</li>
+									</ul>`)
+
+		const flashItem = new Route(`
+						<div>
+							<h2>Card </h2>
+							<h2> Back-card </h2>
+						</div>`)
+
+	</script>
+	<script type="text/javascript">
+		const {ipcRenderer:watcher} = require('electron')
+		const Flashcard = require('../../db3/Flashcard')
+		const Jser = require('../jser')
+		const divCtrl = Jser.Listener.div('animer')
+		let anim = divCtrl.emit('anim-start')
+
+
+		const RouteTo = {
+			'flash-inputs': ()=>flashInputs.USE(),
+			'flash-list': ()=>flashList.USE(),
+			'flash-item': ()=>flashItem.USE(),
+		}
+
+	</script>
+
+</body>
